@@ -150,11 +150,13 @@ class MarketScreen extends React.Component<Props, ReactState> {
   private refresh = async () => {
     const { globalConfig, eosAccount } = this.props
 
-    const orders = await loadOrders(globalConfig)
-
-    const validOrders = orders.filter(isValidForUser(eosAccount.name))
-
-    this.setState({ orders: validOrders })
+    try {
+      const orders = await loadOrders(globalConfig)
+      const validOrders = orders.filter(isValidForUser(eosAccount.name))
+      this.setState({ orders: validOrders })
+    } catch (e) {
+      console.warn("Failed to load orders (backend offline?):", e)
+    }
 
     // refresh orders each minute
     this.refreshHandler = setTimeout(this.refresh, 60 * 1000)

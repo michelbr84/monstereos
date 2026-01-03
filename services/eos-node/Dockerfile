@@ -1,6 +1,6 @@
-FROM eosio/eos:v1.2.4
+FROM eostitan/eos-testnet:latest
 
-RUN apt-get update && apt-get install curl -y
+RUN apt-get update && apt-get install curl dos2unix -y
 
 COPY ./ /opt/application
 
@@ -16,4 +16,7 @@ RUN chmod +x /wait
 ENV DATA_DIR /opt/eosio/bin/data-dir
 
 ## Launch the wait tool and then start nodeos
-CMD /wait && /opt/application/start.sh
+CMD /wait && \
+    dos2unix /opt/application/start.sh && \
+    chmod +x /opt/application/start.sh && \
+    /opt/application/start.sh

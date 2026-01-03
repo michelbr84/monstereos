@@ -7,7 +7,7 @@ import {
   NOTIFICATION_ERROR,
   NOTIFICATION_SUCCESS,
 } from "../../store"
-import { Link } from "react-router-dom"
+import Link from "../shared/Link"
 
 import PageContainer from "../shared/PageContainer"
 import TitleBar from "../shared/TitleBar"
@@ -148,7 +148,7 @@ class ArenasScreen extends React.Component<Props, ReactState> {
 
       this.setState({ arenas })
     } catch (error) {
-      console.error("Fail to load Arenas", error)
+      console.warn("Fail to load Arenas (backend offline?)", error)
       // dispatchPushNotification("Fail to load Arenas")
     }
 

@@ -1,5 +1,6 @@
 import { doLoadScatter, doLoadIdentity } from "../store"
-import ScatterJS from "scatter-js/dist/scatter.esm"
+import ScatterJS from "scatterjs-core"
+import ScatterEOS from "scatterjs-plugin-eosjs"
 import eos from "eosjs"
 
 const customWindow = window as any
@@ -15,6 +16,8 @@ const loadScatter = (scatter: any, store: any) => {
 }
 
 export default (store: any) => {
+  ScatterJS.plugins(new ScatterEOS())
+
   ScatterJS.scatter.connect("MonsterEOS").then((connected: any) => {
     if (connected) {
       const scatter = ScatterJS.scatter

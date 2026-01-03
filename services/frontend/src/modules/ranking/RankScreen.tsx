@@ -46,10 +46,10 @@ class RankScreen extends React.Component<Props, {}> {
     const currentType = type || RANK_ELDEST
 
     return (
-      <div className="field" onChange={this.handleChangeRank}>
+      <div className="field">
         <div className="control">
           <div className="select is-fullwidth">
-            <select value={currentType}>
+            <select value={currentType} onChange={this.handleChangeRank}>
               <option value={RANK_ELDEST}>Eldest Monsters</option>
               <option value={RANK_ACTIVITY}>Top Activity</option>
               <option value={RANK_COLLECTORS}>Top Collectors</option>

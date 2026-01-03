@@ -29,7 +29,7 @@ services:
       monstereos:
 
   fullnode:
-    image: eosio/eos:v1.2.4
+
     build:
       context: ./services/eos-node
       dockerfile: Dockerfile

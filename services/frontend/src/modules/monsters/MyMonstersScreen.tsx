@@ -198,9 +198,13 @@ class MyMonstersScreen extends React.Component<Props, ReactState> {
     const { dispatchDoLoadMyMonsters } = this.props
     this.setState({ isLoading: true })
 
-    console.info("fetching monsters")
-    await dispatchDoLoadMyMonsters()
-    console.info("monsters fetched")
+    try {
+      console.info("fetching monsters")
+      await dispatchDoLoadMyMonsters()
+      console.info("monsters fetched")
+    } catch (e) {
+      console.warn("Failed to fetch monsters", e)
+    }
 
     this.setState({ isLoading: false })
 

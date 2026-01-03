@@ -1,6 +1,6 @@
 import * as React from "react"
 import { Arena } from "./battles"
-import { Link } from "react-router-dom"
+import Link from "../shared/Link"
 import * as moment from "moment"
 
 interface Props {

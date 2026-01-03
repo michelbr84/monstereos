@@ -44,7 +44,7 @@ class GraveyardRank extends React.Component<{}, ReactState> {
                 variables: {
                   offset: monsters.length,
                 },
-                updateQuery: (prev, { fetchMoreResult }) => {
+                updateQuery: (prev: any, { fetchMoreResult }: any) => {
                   if (!fetchMoreResult) {
                     this.setState({ loadMore: false })
                     return prev

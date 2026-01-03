@@ -7,7 +7,7 @@ import {
   NOTIFICATION_ERROR,
   NOTIFICATION_SUCCESS,
 } from "../../store"
-import { Link } from "react-router-dom"
+import Link from "../shared/Link"
 
 import PageContainer from "../shared/PageContainer"
 import {
@@ -244,7 +244,7 @@ class BattleScreen extends React.Component<Props, ReactState> {
 
       // TODO: implement websockets
     } catch (error) {
-      console.error("Fail to load Arena", error)
+      console.warn("Fail to load Arena (backend offline?)", error)
       // dispatchPushNotification("Fail to load Arena")
     }
 

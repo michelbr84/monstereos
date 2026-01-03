@@ -35,17 +35,24 @@ MONSTERS_USERE_PVTKEY="5Jdwjwto9wxy5ZNPnWSn965eb8ZtSrK1uRKUxhviLpr9gK79hmM"
 MONSTERS_USERE_PUBKEY="EOS5VdFvRRTtVQAPUJZQCYvpBekYV4nc1cFe7og9aYPTBMXZ38Koy"
 
 # start wallet
-wallet_password=$(./cleos wallet create --to-console | awk 'FNR > 3 { print $1 }' | tr -d '"')
-echo $wallet_password > "$CONFIG_DIR"/keys/default_wallet_password.txt
-
-# import wallet keys
-sleep 2s
-./cleos wallet import -n default --private-key $EOSIO_PRIVATE_KEY
-./cleos wallet import -n default --private-key $EOSIO_SYS_PVTKEY
-./cleos wallet import -n default --private-key $MONSTERS_ACCOUNT_PRIVATE_OWNER_KEY
-./cleos wallet import -n default --private-key $MONSTERS_ACCOUNT_PRIVATE_ACTIVE_KEY
-./cleos wallet import -n default --private-key $MONSTERS_USERA_PVTKEY
-./cleos wallet import -n default --private-key $MONSTERS_USERB_PVTKEY
-./cleos wallet import -n default --private-key $MONSTERS_USERC_PVTKEY
-./cleos wallet import -n default --private-key $MONSTERS_USERD_PVTKEY
-./cleos wallet import -n default --private-key $MONSTERS_USERE_PVTKEY
+# start wallet
+if [ ! -f "$CONFIG_DIR/keys/default_wallet_password.txt" ]; then
+    echo "Creating new wallet..."
+    wallet_password=$(cleos wallet create --to-console | awk 'FNR > 3 { print $1 }' | tr -d '"')
+    echo $wallet_password > "$CONFIG_DIR"/keys/default_wallet_password.txt
+    
+    # import wallet keys
+    sleep 2s
+    cleos wallet import -n default --private-key $EOSIO_PRIVATE_KEY
+    cleos wallet import -n default --private-key $EOSIO_SYS_PVTKEY
+    cleos wallet import -n default --private-key $MONSTERS_ACCOUNT_PRIVATE_OWNER_KEY
+    cleos wallet import -n default --private-key $MONSTERS_ACCOUNT_PRIVATE_ACTIVE_KEY
+    cleos wallet import -n default --private-key $MONSTERS_USERA_PVTKEY
+    cleos wallet import -n default --private-key $MONSTERS_USERB_PVTKEY
+    cleos wallet import -n default --private-key $MONSTERS_USERC_PVTKEY
+    cleos wallet import -n default --private-key $MONSTERS_USERD_PVTKEY
+    cleos wallet import -n default --private-key $MONSTERS_USERE_PVTKEY
+else
+    echo "Wallet exists, unlocking..."
+    cleos wallet unlock -n default --password $(cat "$CONFIG_DIR/keys/default_wallet_password.txt") || true
+fi

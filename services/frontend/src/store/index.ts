@@ -193,30 +193,49 @@ export const requestScatterIdentity = () => async (
   console.info("requesting identity")
   const { scatter } = getState()
 
-  await scatter.suggestNetwork(eosNetwork)
-
-  const requiredFields = {
-    accounts: [eosNetwork],
+  if (!scatter) {
+    return dispatch(
+      pushNotification(
+        "Scatter not detected. Please install or unlock Scatter.",
+        NOTIFICATION_ERROR,
+      ),
+    )
   }
 
-  console.info("getting identity")
-  return getState()
-    .scatter.getIdentity(requiredFields)
-    .then((identity: any) => {
-      console.info("identity is ", identity)
-      dispatch(doLoadIdentity(identity))
-      return true
-    })
-    .catch((error: any) => {
-      if (error && error.message) {
-        dispatch(pushNotification(error.message, NOTIFICATION_ERROR))
-      } else {
-        console.error("Fail to get Scatter Identity", error)
-        dispatch(
-          pushNotification("Fail to get Scatter Identity", NOTIFICATION_ERROR),
-        )
-      }
-    })
+  try {
+    await scatter.suggestNetwork(eosNetwork)
+
+    const requiredFields = {
+      accounts: [eosNetwork],
+    }
+
+    console.info("getting identity")
+    return scatter
+      .getIdentity(requiredFields)
+      .then((identity: any) => {
+        console.info("identity is ", identity)
+        dispatch(doLoadIdentity(identity))
+        return true
+      })
+      .catch((error: any) => {
+        if (error && error.message) {
+          dispatch(pushNotification(error.message, NOTIFICATION_ERROR))
+        } else {
+          console.error("Fail to get Scatter Identity", error)
+          dispatch(
+            pushNotification(
+              "Fail to get Scatter Identity",
+              NOTIFICATION_ERROR,
+            ),
+          )
+        }
+      })
+  } catch (e) {
+    console.warn("Scatter suggestNetwork failed", e)
+    dispatch(
+      pushNotification("Failed to connect to Scatter", NOTIFICATION_ERROR),
+    )
+  }
 }
 
 export const doLogout = () => (dispatch: any, getState: any) => {

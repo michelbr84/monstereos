@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Link } from "react-router-dom"
+import Link from "./Link"
 import { connect } from "react-redux"
 import { State, doLogout, requestScatterIdentity } from "../../store"
 import { getEosAccount, SCATTER_EXTENSION_LINK } from "../../utils/scatter"

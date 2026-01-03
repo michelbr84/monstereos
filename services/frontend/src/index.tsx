@@ -38,7 +38,9 @@ ReactDOM.render(
 // some global inits
 loadScatter(store)
 loadNetwork(store)
-loadGlobalConfig(store)
+loadGlobalConfig(store).catch(err => {
+  console.warn("Failed to load global config. Backend may be offline.", err)
+})
 
 // service worker
 registerServiceWorker()

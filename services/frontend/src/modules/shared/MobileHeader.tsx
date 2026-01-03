@@ -124,9 +124,7 @@ const mapDispatchToProps = {
   dispatchRequestScatterIdentity: requestScatterIdentity,
 }
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  )(MobileHeader),
-)
+export default withRouter(connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(MobileHeader) as any)

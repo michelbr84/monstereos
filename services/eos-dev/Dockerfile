@@ -1,8 +1,10 @@
-FROM eosio/eos-dev:v1.2.4
+FROM eostitan/eos-testnet:latest
 
-RUN apt-get update && apt-get install curl -y
+RUN apt-get update && apt-get install curl dos2unix -y
 
 COPY ./ /opt/application
+RUN find /opt/application -name "*.sh" -exec dos2unix {} + && \
+    find /opt/application -name "*.sh" -exec chmod +x {} +
 
 VOLUME /opt/application
 
@@ -12,4 +14,6 @@ WORKDIR /opt/eosio/bin
 ENV DATA_DIR /root/.local/share 
 ENV CONFIG_DIR /opt/application/config
 
-CMD /opt/application/start.sh
+CMD dos2unix /opt/application/start.sh && \
+    chmod +x /opt/application/start.sh && \
+    /opt/application/start.sh

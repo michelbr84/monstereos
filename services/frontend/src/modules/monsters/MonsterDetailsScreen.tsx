@@ -126,24 +126,32 @@ class MyMonstersScreen extends React.Component<Props, ReactState> {
       },
       globalConfig,
     } = this.props
-    let monster = await loadMonsterById(id, globalConfig)
-    const petTypes = await loadPetTypes()
-    const elements = await loadElements()
-    // remove first element as it appears on every monster
-    const monsterElements = petTypes[monster.type].elements
-      .slice(1)
-      .map((e: any) => elements[e])
 
-    monster = { ...monster, elements: monsterElements }
+    try {
+      let monster = await loadMonsterById(id, globalConfig)
 
-    this.setState({ monster })
+      if (monster) {
+        const petTypes = await loadPetTypes()
+        const elements = await loadElements()
+        // remove first element as it appears on every monster
+        const monsterElements = petTypes[monster.type].elements
+          .slice(1)
+          .map((e: any) => elements[e])
 
-    const orders: OrderProps[] = await loadOrders(globalConfig)
-    const validOrder = orders.find(vo => vo.monster.id === Number(id))
+        monster = { ...monster, elements: monsterElements }
 
-    console.info("Order Found", validOrder)
-    if (validOrder) {
-      this.setState({ order: validOrder })
+        this.setState({ monster })
+
+        const orders: OrderProps[] = await loadOrders(globalConfig)
+        const validOrder = orders.find(vo => vo.monster.id === Number(id))
+
+        console.info("Order Found", validOrder)
+        if (validOrder) {
+          this.setState({ order: validOrder })
+        }
+      }
+    } catch (e) {
+      console.warn("Failed to load details (backend offline?):", e)
     }
   }
 }
